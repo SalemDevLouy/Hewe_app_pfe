@@ -11,7 +11,6 @@ const routeItems = [
   { href: "/store", label: "Store" },
   { href: "/profile", label: "Profile" },
   { href: "/cart", label: "Cart" },
-  { href: "/quiz", label: "Quiz" },
 ];
 
 function isActive(pathname: string, href: string) {

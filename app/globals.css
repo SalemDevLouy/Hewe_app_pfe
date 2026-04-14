@@ -56,6 +56,16 @@
   --shadow-wellness: 0 8px 24px 0 rgba(26, 28, 28, 0.04);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: theme('color.background');
   color: theme('color.on-background');

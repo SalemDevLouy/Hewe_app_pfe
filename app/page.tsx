@@ -39,8 +39,8 @@ export default function Home() {
               A digital sanctuary designed to curate your path to balance. We translate complex bio-data into simple, editorialized daily rhythms.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link className="px-10 py-5 bg-linear-to-br from-primary to-primary-container text-on-primary rounded-xl font-headline font-bold text-lg wellness-glow hover:scale-[1.02] active:scale-98 transition-all duration-300 text-center" href="/assessment">
-                Start Free Assessment
+              <Link className="px-10 py-5 bg-linear-to-br from-primary to-primary-container text-on-primary rounded-xl font-headline font-bold text-lg wellness-glow hover:scale-[1.02] active:scale-98 transition-all duration-300 text-center" href="/quiz">
+                Start Quiz First
               </Link>
               <Link className="px-10 py-5 bg-surface-container-highest text-on-surface rounded-xl font-headline font-semibold text-lg hover:bg-surface-container-high transition-colors text-center" href="/dashboard">
                 View Sample Plan
@@ -172,7 +172,7 @@ export default function Home() {
               <p className="text-[10px] font-label uppercase tracking-widest text-primary font-bold">Limited Banner</p>
               <h4 className="font-headline text-3xl font-bold mt-3">7-Day Reset Path</h4>
               <p className="text-stone-600 mt-3 max-w-sm">Start a guided week focused on sleep recovery and energy stability.</p>
-              <Link href="/quiz" className="inline-flex mt-6 px-5 py-3 rounded-xl bg-primary text-white font-semibold">Begin Journey</Link>
+                <Link href="/quiz" className="inline-flex mt-6 px-5 py-3 rounded-xl bg-primary text-white font-semibold">Begin Journey</Link>
             </div>
             <div className="rounded-3xl p-8 bg-stone-900 text-white relative overflow-hidden">
               <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, #88d982, transparent 35%), radial-gradient(circle at 80% 80%, #2e7d32, transparent 35%)" }}></div>

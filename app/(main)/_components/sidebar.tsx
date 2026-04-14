@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { markSignedOut } from "@/app/lib/session-flow";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
@@ -18,9 +19,15 @@ function isActive(pathname: string, href: string) {
 
 export default function MainSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    markSignedOut();
+    router.replace("/login");
+  };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col border-r border-slate-200/70 bg-slate-50/95 backdrop-blur-xl shadow-[8px_0_24px_rgba(26,28,28,0.04)] md:flex">
+    <aside className="fixed top-0 left-0 z-40 hidden w-72 h-screen overflow-y-auto flex-col border-r border-slate-200/70 bg-slate-50/95 backdrop-blur-xl shadow-[8px_0_24px_rgba(26,28,28,0.04)] md:flex">
       <div className="px-8 py-10 flex flex-col items-start gap-2">
         <span className="text-2xl font-bold tracking-tighter text-green-900 font-headline">The Mindful Editorial</span>
         <div className="flex items-center gap-3 mt-8">
@@ -57,6 +64,13 @@ export default function MainSidebar() {
         <button className="w-full editorial-gradient text-white py-4 px-6 rounded-2xl font-semibold flex items-center justify-center gap-3 wellness-glow scale-98 active:scale-95 transition-transform">
           <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 0, 'wght' 600" }}>add</span>
           {" "}Log a Habit
+        </button>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="mt-3 w-full bg-white text-stone-700 py-3 px-6 rounded-2xl font-semibold border border-slate-200 hover:bg-slate-50 transition-colors"
+        >
+          Logout
         </button>
       </div>
     </aside>
