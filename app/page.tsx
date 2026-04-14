@@ -15,7 +15,7 @@ export default function Home() {
             <Link className="text-[10px] font-label uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:opacity-80 transition-opacity" href="#why-us">Why Us</Link>
             <Link className="text-[10px] font-label uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:opacity-80 transition-opacity" href="#services">Services</Link>
             <Link className="text-[10px] font-label uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:opacity-80 transition-opacity" href="#testimonials">Testimonials</Link>
-            <Link className="text-[10px] font-label uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:opacity-80 transition-opacity" href="/dashboard">Dashboard</Link>
+            <Link className="text-[10px] font-label uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:opacity-80 transition-opacity" href="/main/dashboard">Dashboard</Link>
           </nav>
           <div className="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden wellness-glow">
             <img alt="User avatar" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFqOm_Ni5YHROPUsYXWLvBEfygdZkrnEwVn4zu6fqd1x_LzrLpnmBZigzyL3H4n_UwdytKSnzLjsc_My4Sq8VwodSR1gN9xAsCdfxR94ugUDTexZ6uR-7TO53bwB2zn-KOdtE5vaLZtbgEmvwpi7yuvBzk5T09pqKZPKFNjm2W7ccjn4t3EzNtct7leIMCe-_Hm8yoPz6NhmM5-hvlsHrq2Ilou5nKOt5BmwfYigeTq-UzhBtH0ClbmrgZ2J2plkiLeleZ2f-np2LH"/>
@@ -42,7 +42,7 @@ export default function Home() {
               <Link className="px-10 py-5 bg-linear-to-br from-primary to-primary-container text-on-primary rounded-xl font-headline font-bold text-lg wellness-glow hover:scale-[1.02] active:scale-98 transition-all duration-300 text-center" href="/quiz">
                 Start Quiz First
               </Link>
-              <Link className="px-10 py-5 bg-surface-container-highest text-on-surface rounded-xl font-headline font-semibold text-lg hover:bg-surface-container-high transition-colors text-center" href="/dashboard">
+              <Link className="px-10 py-5 bg-surface-container-highest text-on-surface rounded-xl font-headline font-semibold text-lg hover:bg-surface-container-high transition-colors text-center" href="/main/dashboard">
                 View Sample Plan
               </Link>
             </div>
@@ -124,26 +124,26 @@ export default function Home() {
                 <p className="text-[10px] font-label uppercase tracking-widest text-primary font-bold mb-3">Our Services</p>
                 <h3 className="text-4xl md:text-5xl font-headline font-bold tracking-tight">Designed Around Real Life</h3>
               </div>
-              <Link href="/dashboard" className="text-primary font-semibold hover:underline">Explore the live dashboard</Link>
+              <Link href="/main/dashboard" className="text-primary font-semibold hover:underline">Explore the live dashboard</Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Link href="/dashboard" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
+              <Link href="/main/dashboard" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <span className="material-symbols-outlined text-3xl text-primary">dashboard</span>
                 <h4 className="font-headline font-bold text-xl mt-4">Daily Dashboard</h4>
                 <p className="text-stone-600 mt-2 text-sm">One place to understand your readiness, stress, and rhythm.</p>
               </Link>
-              <Link href="/tracker" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
+              <Link href="/main/tracker" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <span className="material-symbols-outlined text-3xl text-primary">event_note</span>
                 <h4 className="font-headline font-bold text-xl mt-4">Habit Tracker</h4>
                 <p className="text-stone-600 mt-2 text-sm">Track tiny wins and build consistency with contextual prompts.</p>
               </Link>
-              <Link href="/insights" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
+              <Link href="/main/insights" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <span className="material-symbols-outlined text-3xl text-primary">auto_awesome</span>
                 <h4 className="font-headline font-bold text-xl mt-4">AI Insights</h4>
                 <p className="text-stone-600 mt-2 text-sm">Editorial guidance converted from your bio-signals in plain language.</p>
               </Link>
-              <Link href="/store" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
+              <Link href="/main/store" className="bg-white rounded-3xl p-8 border border-outline-variant/20 hover:border-primary/40 hover:-translate-y-1 transition-all">
                 <span className="material-symbols-outlined text-3xl text-primary">shopping_bag</span>
                 <h4 className="font-headline font-bold text-xl mt-4">Curated Store</h4>
                 <p className="text-stone-600 mt-2 text-sm">Evidence-backed products selected for your immediate needs.</p>
@@ -180,7 +180,7 @@ export default function Home() {
                 <p className="text-[10px] font-label uppercase tracking-widest text-green-300 font-bold">Member Banner</p>
                 <h4 className="font-headline text-3xl font-bold mt-3">Unlock Pro Guidance</h4>
                 <p className="text-stone-300 mt-3 max-w-sm">Get adaptive plans, deeper trend analysis, and priority coach prompts.</p>
-                <Link href="/profile" className="inline-flex mt-6 px-5 py-3 rounded-xl bg-white text-stone-900 font-semibold">View Membership</Link>
+                <Link href="/main/profile" className="inline-flex mt-6 px-5 py-3 rounded-xl bg-white text-stone-900 font-semibold">View Membership</Link>
               </div>
             </div>
           </div>
@@ -269,18 +269,18 @@ export default function Home() {
           <div>
             <h4 className="text-white font-headline font-bold mb-6">Connection</h4>
             <ul className="space-y-4 text-sm font-label uppercase tracking-widest">
-              <li><Link className="hover:text-green-400 transition-colors" href="/profile">Instagram</Link></li>
-              <li><Link className="hover:text-green-400 transition-colors" href="/insights">Substack</Link></li>
-              <li><Link className="hover:text-green-400 transition-colors" href="/assessment">Contact</Link></li>
+              <li><Link className="hover:text-green-400 transition-colors" href="/main/profile">Instagram</Link></li>
+              <li><Link className="hover:text-green-400 transition-colors" href="/main/insights">Substack</Link></li>
+              <li><Link className="hover:text-green-400 transition-colors" href="/main/assessment">Contact</Link></li>
             </ul>
           </div>
         </div>
         <div className="mt-24 pt-8 border-t border-stone-800 flex flex-col md:flex-row justify-between gap-4 text-[10px] font-label uppercase tracking-widest opacity-50">
           <p>© 2024 The Mindful Editorial. All Rights Reserved.</p>
           <div className="flex gap-8">
-            <Link href="/profile">Terms</Link>
-            <Link href="/profile">Privacy</Link>
-            <Link href="/profile">Cookies</Link>
+            <Link href="/main/profile">Terms</Link>
+            <Link href="/main/profile">Privacy</Link>
+            <Link href="/main/profile">Cookies</Link>
           </div>
         </div>
       </footer>

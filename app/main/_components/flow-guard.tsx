@@ -34,7 +34,7 @@ export default function FlowGuard({ children }: FlowGuardProps) {
 
     if (quizCompleted && isQuizRoute) {
       setReady(false);
-      router.replace("/dashboard");
+      router.replace("/main/dashboard");
       return;
     }
 

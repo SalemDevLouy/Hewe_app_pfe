@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   const handleSignIn = () => {
     markSignedIn();
-    router.replace("/dashboard");
+    router.replace("/main/dashboard");
   };
 
   return (

@@ -77,7 +77,7 @@ export default function Dashboard() {
             <span className="font-label uppercase tracking-widest text-[10px] text-stone-500 font-bold">Curated Journey</span>
             <h2 className="font-headline text-3xl font-bold tracking-tight text-on-surface">Today's Plan</h2>
           </div>
-          <a className="text-primary font-semibold text-sm hover:underline" href="/tracker">View Full Calendar</a>
+          <a className="text-primary font-semibold text-sm hover:underline" href="/main/tracker">View Full Calendar</a>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Morning Card */}

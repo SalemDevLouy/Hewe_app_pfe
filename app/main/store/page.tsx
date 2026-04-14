@@ -92,7 +92,7 @@ export default function Store() {
       {/* Product Grid - Row 1 */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
         {productsRow1.map((item, i) => (
-          <Link key={i} href="/product-details" className="group block">
+          <Link key={i} href="/main/product-details" className="group block">
              <div className="aspect-[4/5] bg-surface-container-low rounded-3xl overflow-hidden transition-all group-hover:bg-surface-container-highest relative">
                 <img alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={item.image}/>
                 {item.badge && (
@@ -137,7 +137,7 @@ export default function Store() {
       {/* Product Grid - Row 2 */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {productsRow2.map((item, i) => (
-            <Link key={i} href="/product-details" className="group block">
+            <Link key={i} href="/main/product-details" className="group block">
              <div className="aspect-[4/5] bg-surface-container-low rounded-3xl overflow-hidden transition-all group-hover:bg-surface-container-highest relative">
                 <img alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={item.image}/>
              </div>
@@ -161,7 +161,7 @@ export default function Store() {
 
       {/* Floating Action Button (Cart) */}
       <div className="fixed bottom-12 right-12 z-50 hidden md:block">
-         <Link href="/cart" className="w-16 h-16 bg-white/90 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-center group hover:bg-primary transition-all duration-300 active:scale-95 border border-outline-variant/10 relative">
+         <Link href="/main/cart" className="w-16 h-16 bg-white/90 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-center group hover:bg-primary transition-all duration-300 active:scale-95 border border-outline-variant/10 relative">
             <span className="material-symbols-outlined text-stone-600 group-hover:text-white text-3xl transition-colors">shopping_bag</span>
             <span className="absolute top-4 right-4 w-3.5 h-3.5 bg-primary rounded-full border-2 border-white"></span>
          </Link>

@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { markSignedOut } from "@/app/lib/session-flow";
+import { signOut } from "next-auth/react";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
-  { href: "/tracker", label: "My Plan", icon: "event_note" },
-  { href: "/insights", label: "Recommendations", icon: "auto_awesome" },
-  { href: "/assessment", label: "Assessment", icon: "check_circle" },
-  { href: "/store", label: "Store", icon: "local_mall" },
-  { href: "/profile", label: "Profile", icon: "person" },
+  { href: "/main/dashboard", label: "Dashboard", icon: "dashboard" },
+  { href: "/main/tracker", label: "My Plan", icon: "event_note" },
+  { href: "/main/insights", label: "Recommendations", icon: "auto_awesome" },
+  { href: "/main/assessment", label: "Assessment", icon: "check_circle" },
+  { href: "/main/store", label: "Store", icon: "local_mall" },
+  { href: "/main/profile", label: "Profile", icon: "person" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -21,9 +22,11 @@ export default function MainSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     markSignedOut();
-    router.replace("/login");
+    await signOut({ redirect: false });
+    router.replace("/signin");
+    router.refresh();
   };
 
   return (

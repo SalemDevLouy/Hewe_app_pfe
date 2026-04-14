@@ -92,13 +92,13 @@ export default function ProductDetailsPage() {
 
               <div className="flex gap-3">
                 <Link
-                  href="/cart"
+                  href="/main/cart"
                   className="flex-1 rounded-xl bg-gradient-to-br from-primary to-primary-container px-5 py-4 text-center text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-transform hover:scale-[1.01] active:scale-95"
                 >
                   Add to Cart
                 </Link>
                 <Link
-                  href="/store"
+                  href="/main/store"
                   className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold uppercase tracking-widest text-stone-700 transition-colors hover:bg-slate-50"
                 >
                   Back

@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const routeItems = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/tracker", label: "Tracker" },
-  { href: "/insights", label: "Insights" },
-  { href: "/assessment", label: "Assessment" },
-  { href: "/store", label: "Store" },
-  { href: "/profile", label: "Profile" },
-  { href: "/cart", label: "Cart" },
+  { href: "/main/dashboard", label: "Dashboard" },
+  { href: "/main/tracker", label: "Tracker" },
+  { href: "/main/insights", label: "Insights" },
+  { href: "/main/assessment", label: "Assessment" },
+  { href: "/main/store", label: "Store" },
+  { href: "/main/profile", label: "Profile" },
+  { href: "/main/cart", label: "Cart" },
 ];
 
 function isActive(pathname: string, href: string) {

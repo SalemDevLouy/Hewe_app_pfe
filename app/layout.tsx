@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import AosProvider from "./_components/aos-provider";
+import { AuthProvider } from "./_components/auth-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -47,8 +48,10 @@ export default function RootLayout({
           `}</style>
       </head>
       <body className="min-h-screen bg-background text-on-background font-body">
-        <AosProvider />
-        {children}
+        <AuthProvider>
+          <AosProvider />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
