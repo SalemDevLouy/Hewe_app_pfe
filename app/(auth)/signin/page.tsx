@@ -15,28 +15,31 @@ function SignInContent() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(error || "");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
+    setMessage("");
 
     try {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        redirect: true,
+        callbackUrl: callbackUrl,
       });
 
-      if (result?.error) {
+      if (result?.error || !result?.ok) {
         setErrorMessage("Invalid email or password");
+        setIsLoading(false);
       } else if (result?.ok) {
-        router.push(callbackUrl);
+        setMessage("Login successful, redirecting...");
       }
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
       console.error(error);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -54,6 +57,12 @@ function SignInContent() {
           {errorMessage && (
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3">
               <p className="text-sm font-medium text-red-800">{errorMessage}</p>
+            </div>
+          )}
+
+          {message && (
+            <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3">
+              <p className="text-sm font-medium text-green-800">{message}</p>
             </div>
           )}
 
