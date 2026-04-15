@@ -1,9 +1,20 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+
+function getAuthErrorMessage(errorCode: string | null) {
+  switch (errorCode) {
+    case "CredentialsSignin":
+      return "Invalid email or password";
+    case "AccessDenied":
+      return "Access denied";
+    default:
+      return errorCode ? "Sign in failed. Please try again." : "";
+  }
+}
 
 function SignInContent() {
   const router = useRouter();
@@ -14,8 +25,12 @@ function SignInContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(error || "");
+  const [errorMessage, setErrorMessage] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setErrorMessage(getAuthErrorMessage(error));
+  }, [error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,19 +42,27 @@ function SignInContent() {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: true,
+        redirect: false,
         callbackUrl: callbackUrl,
       });
 
-      if (result?.error || !result?.ok) {
-        setErrorMessage("Invalid email or password");
-        setIsLoading(false);
-      } else if (result?.ok) {
-        setMessage("Login successful, redirecting...");
+      if (result?.error) {
+        setErrorMessage(getAuthErrorMessage(result.error));
+        return;
       }
+
+      if (result?.ok) {
+        setMessage("Login successful, redirecting...");
+        router.push(result.url || callbackUrl);
+        router.refresh();
+        return;
+      }
+
+      setErrorMessage("Sign in failed. Please try again.");
     } catch (error) {
       setErrorMessage("An error occurred. Please try again.");
       console.error(error);
+    } finally {
       setIsLoading(false);
     }
   };
