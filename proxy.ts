@@ -22,10 +22,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+    const token = await getToken({
+   req: request,
+   cookieName: process.env.VERCEL_ENV === "development"
+                ? "next-auth.session-token"
+                : "__Secure-next-auth.session-token",
+   secret: process.env.NEXTAUTH_SECRET,
+})
+
 
   // All routes under /main are private and require authentication.
   const isProtectedRoute = pathname === "/main" || pathname.startsWith("/main/");
