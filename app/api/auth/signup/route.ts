@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name } = await request.json();
+    const { email, password, name, quizProfile } = await request.json();
 
     // Validation
     if (!email || !password) {
@@ -17,6 +17,13 @@ export async function POST(request: NextRequest) {
     if (password.length < 8) {
       return NextResponse.json(
         { error: "Password must be at least 8 characters long" },
+        { status: 400 }
+      );
+    }
+
+    if (!quizProfile) {
+      return NextResponse.json(
+        { error: "Please complete the quiz before signing up" },
         { status: 400 }
       );
     }
@@ -43,6 +50,18 @@ export async function POST(request: NextRequest) {
         name: name || "",
         password: hashedPassword,
       },
+    });
+
+    await prisma.$runCommandRaw({
+      insert: "QuizProfile",
+      documents: [
+        {
+          userId: user.id,
+          data: quizProfile,
+          completedAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
     });
 
     return NextResponse.json(

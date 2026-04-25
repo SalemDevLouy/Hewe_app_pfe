@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getQuizProfile, markSignedIn } from "@/app/lib/session-flow";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const [isCheckingQuiz, setIsCheckingQuiz] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,6 +18,17 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    const quizProfile = getQuizProfile();
+
+    if (!quizProfile) {
+      router.replace("/quiz");
+      return;
+    }
+
+    setIsCheckingQuiz(false);
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -48,6 +63,15 @@ export default function SignUpPage() {
     }
 
     try {
+      const quizProfile = getQuizProfile();
+
+      if (!quizProfile) {
+        setError("Please complete the quiz before signing up.");
+        setIsLoading(false);
+        router.replace("/quiz");
+        return;
+      }
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -57,6 +81,7 @@ export default function SignUpPage() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          quizProfile,
         }),
       });
 
@@ -76,8 +101,14 @@ export default function SignUpPage() {
         signIn("credentials", {
           email: formData.email,
           password: formData.password,
-          redirect: true,
+          redirect: false,
           callbackUrl: "/main/dashboard",
+        }).then((result) => {
+          if (result?.ok) {
+            markSignedIn();
+            router.push("/main/dashboard");
+            router.refresh();
+          }
         });
       }, 1500);
     } catch (err) {
@@ -87,6 +118,14 @@ export default function SignUpPage() {
       setIsLoading(false);
     }
   };
+
+  if (isCheckingQuiz) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_20%_20%,rgba(13,99,27,0.15),transparent_35%),radial-gradient(circle_at_80%_80%,rgba(46,125,50,0.12),transparent_40%),#f7f8f7] px-6 py-12">
+        <p className="text-sm font-semibold uppercase tracking-widest text-stone-500">Checking quiz progress...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-[radial-gradient(circle_at_20%_20%,rgba(13,99,27,0.15),transparent_35%),radial-gradient(circle_at_80%_80%,rgba(46,125,50,0.12),transparent_40%),#f7f8f7]">

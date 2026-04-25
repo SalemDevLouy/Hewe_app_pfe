@@ -1,5 +1,6 @@
 export const AUTH_STORAGE_KEY = "hewe.authenticated";
 export const QUIZ_STORAGE_KEY = "hewe.quiz.completed";
+export const QUIZ_PROFILE_STORAGE_KEY = "hewe.quiz.profile";
 
 export function isAuthenticated(): boolean {
   if (typeof window === "undefined") {
@@ -32,6 +33,7 @@ export function markSignedOut(): void {
 
   window.localStorage.removeItem(AUTH_STORAGE_KEY);
   window.localStorage.removeItem(QUIZ_STORAGE_KEY);
+  window.localStorage.removeItem(QUIZ_PROFILE_STORAGE_KEY);
 }
 
 export function markQuizCompleted(): void {
@@ -48,4 +50,31 @@ export function resetQuizCompletion(): void {
   }
 
   window.localStorage.removeItem(QUIZ_STORAGE_KEY);
+  window.localStorage.removeItem(QUIZ_PROFILE_STORAGE_KEY);
+}
+
+export function saveQuizProfile(profile: unknown): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.setItem(QUIZ_PROFILE_STORAGE_KEY, JSON.stringify(profile));
+}
+
+export function getQuizProfile<T = unknown>(): T | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const rawProfile = window.localStorage.getItem(QUIZ_PROFILE_STORAGE_KEY);
+
+  if (!rawProfile) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(rawProfile) as T;
+  } catch {
+    return null;
+  }
 }

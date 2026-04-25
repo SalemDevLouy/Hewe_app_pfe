@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { markSignedIn } from "@/app/lib/session-flow";
 
 function getAuthErrorMessage(errorCode: string | null) {
   switch (errorCode) {
@@ -52,6 +53,7 @@ function SignInContent() {
       }
 
       if (result?.ok) {
+        markSignedIn();
         setMessage("Login successful, redirecting...");
         router.push(result.url || callbackUrl);
         router.refresh();

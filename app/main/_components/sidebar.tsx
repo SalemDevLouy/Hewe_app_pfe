@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 const navItems = [
   { href: "/main/dashboard", label: "Dashboard", icon: "dashboard" },
   { href: "/main/tracker", label: "My Plan", icon: "event_note" },
-  { href: "/main/insights", label: "Recommendations", icon: "auto_awesome" },
+  { href: "/main/insights", label: "For You", icon: "auto_awesome" },
   { href: "/main/assessment", label: "Assessment", icon: "check_circle" },
   { href: "/main/store", label: "Store", icon: "local_mall" },
   { href: "/main/profile", label: "Profile", icon: "person" },
