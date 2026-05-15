@@ -8,15 +8,48 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  accounts      Account[]
-  sessions      Session[]
-  quizProfile   QuizProfile?
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                String?
+  email               String?   @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  role                String    @default("user") // "user" or "admin"
+  
+  // User profile
+  bio                 String?
+  dateOfBirth         DateTime?
+  gender              String?
+  phone               String?
+  
+  // Addresses
+  addresses           Address[]
+  
+  // Health & wellness
+  healthGoals         HealthGoal[]
+  preferences         UserPreferences?
+  
+  // Shopping
+  cartItems           CartItem[]
+  orders              Order[]
+  reviews             Review[]
+  ratings             Rating[]
+  
+  // Wishlist
+  wishlistItems       WishlistItem[]
+  
+  // Recommendations
+  recommendationHistory RecommendationHistory[]
+  userSimilarities    UserSimilarity[]         @relation("user1")
+  similarToUsers      UserSimilarity[]         @relation("user2")
+  
+  // Auth
+  accounts            Account[]
+  sessions            Session[]
+  quizProfile         QuizProfile?
+  
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model QuizProfile {
@@ -64,4 +97,367 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// ============= User Module Models =============
+
+model Address {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  
+  street       String
+  city         String
+  state        String
+  country      String
+  postalCode   String
+  
+  isDefault    Boolean  @default(false)
+  label        String?  // "Home", "Work", etc.
+  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model UserPreferences {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @db.ObjectId
+  
+  // Notification preferences
+  emailNotifications Boolean @default(true)
+  pushNotifications  Boolean @default(true)
+  smsNotifications   Boolean @default(false)
+  
+  // Content preferences
+  preferredLanguage  String  @default("en")
+  newsletter         Boolean @default(true)
+  
+  // Health preferences
+  dietaryRestrictions String[]
+  allergies          String[]
+  
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model HealthGoal {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  
+  goal          String   // "weight_loss", "muscle_gain", "energy", "immunity", etc.
+  description   String?
+  targetValue   Float?
+  targetDate    DateTime?
+  
+  isActive      Boolean  @default(true)
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ============= Product Module Models =============
+
+model Category {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  image       String?
+  
+  products    Product[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Tag {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String    @unique
+  slug      String    @unique
+  
+  products  ProductTag[]
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Ingredient {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  description String?
+  benefits    String[]
+  
+  products    ProductIngredient[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Basic info
+  name            String
+  slug            String    @unique
+  description     String
+  
+  // Pricing
+  price           Float
+  discountedPrice Float?
+  
+  // Images & media
+  images          String[]
+  thumbnail       String?
+  
+  // Categorization
+  categoryId      String    @db.ObjectId
+  category        Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  
+  // Tags & ingredients
+  tags            ProductTag[]
+  ingredients     ProductIngredient[]
+  
+  // Health benefits
+  healthBenefits  String[]
+  
+  // Inventory
+  sku             String    @unique
+  stock           Int       @default(0)
+  
+  // Health stats
+  calories        Float?
+  protein         Float?
+  carbs           Float?
+  fat             Float?
+  
+  // Metadata
+  seo_title       String?
+  seo_description String?
+  
+  // Relations
+  cartItems       CartItem[]
+  orderItems      OrderItem[]
+  reviews         Review[]
+  ratings         Rating[]
+  wishlistItems   WishlistItem[]
+  recommendations ProductRecommendation[]
+  productSimilarities ProductSimilarity[]   @relation("product1")
+  similarProducts ProductSimilarity[]       @relation("product2")
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model ProductTag {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  tagId     String   @db.ObjectId
+  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, tagId])
+}
+
+model ProductIngredient {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  productId    String     @db.ObjectId
+  ingredientId String     @db.ObjectId
+  quantity     String?    // "100g", "500ml", etc.
+  
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, ingredientId])
+}
+
+// ============= Shopping Module Models =============
+
+model CartItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  quantity  Int      @default(1)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+model Order {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String      @db.ObjectId
+  
+  // Order details
+  orderNumber     String      @unique
+  status          String      @default("pending") // pending, confirmed, shipped, delivered, cancelled
+  
+  // Items
+  items           OrderItem[]
+  
+  // Pricing
+  subtotal        Float
+  tax             Float       @default(0)
+  shippingCost    Float       @default(0)
+  totalAmount     Float
+  
+  // Delivery
+  shippingAddress String
+  deliveryStatus  String?     // tracking info or status
+  
+  // Payment
+  paymentStatus   String      @default("pending") // pending, completed, failed
+  paymentMethod   String?
+  
+  notes           String?
+  
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String   @db.ObjectId
+  productId String   @db.ObjectId
+  
+  quantity  Int
+  price     Float    // Price at time of purchase
+  
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+}
+
+// ============= Review & Rating Module Models =============
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  
+  title     String
+  content   String
+  
+  isVerifiedPurchase Boolean @default(false)
+  helpful   Int       @default(0)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+model Rating {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  
+  score     Int      // 1-5
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+// ============= Wishlist Module Models =============
+
+model WishlistItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, productId])
+}
+
+// ============= Recommendation Module Models =============
+
+model ProductRecommendation {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId       String   @db.ObjectId
+  
+  // Recommendation metadata
+  type            String   // "content_based", "collaborative", "trending", "goal_based"
+  score           Float    // 0-1
+  reason          String?  // Why recommended
+  
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  recommendations RecommendationHistory[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model RecommendationHistory {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @db.ObjectId
+  recommendationId String  @db.ObjectId
+  
+  // Track interactions
+  clicked         Boolean  @default(false)
+  purchased       Boolean  @default(false)
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recommendation  ProductRecommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model UserSimilarity {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  user1Id     String   @db.ObjectId
+  user2Id     String   @db.ObjectId
+  
+  similarity  Float    // 0-1 similarity score
+  
+  user1       User     @relation("user1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2       User     @relation("user2", fields: [user2Id], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([user1Id, user2Id])
+}
+
+model ProductSimilarity {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  product1Id  String   @db.ObjectId
+  product2Id  String   @db.ObjectId
+  
+  similarity  Float    // 0-1 similarity score
+  reason      String?  // "same_category", "similar_ingredients", etc.
+  
+  product1    Product  @relation("product1", fields: [product1Id], references: [id], onDelete: Cascade)
+  product2    Product  @relation("product2", fields: [product2Id], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([product1Id, product2Id])
 }

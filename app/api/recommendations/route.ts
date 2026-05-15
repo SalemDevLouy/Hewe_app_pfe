@@ -18,7 +18,7 @@ type RawQuizCommandResult = {
 };
 
 async function getProfileFromSession(): Promise<UserProfile | null> {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as any;
   const userId = session?.user?.id;
 
   if (!userId) {
